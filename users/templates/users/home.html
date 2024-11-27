@@ -1,0 +1,52 @@
+{% extends "users/base.html" %}
+{% block title %} Home Page {% endblock title %}
+{% block content %}
+<div class="jumbotron">
+	<h1 class="display-4">Welcome, {{ user.first_name.title|default:'Guest' }}</h1>
+	<p class="lead">
+
+	</p>
+	<hr class="my-4">
+	<p class="lead">
+		{% if user.is_authenticated %}
+
+		{% else %}
+		<a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign in</a>
+		{% endif %}
+	</p>
+</div>
+
+{% if user.is_authenticated %}
+<div class="container">
+	<h2>Your Services</h2>
+	<a href="{% url 'add_service' %}" class="btn btn-secondary">Add New Service</a>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Service Name</th>
+				<th>Description</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for service in services %}
+			<tr>
+				<td>
+					<strong>{{ service.name }}</strong>
+					<a href="{% url 'edit_service' service.id %}"
+						class="btn btn-warning btn-sm">Edit</a>
+					<!-- Ссылка на редактирование -->
+				</td>
+				<td>{{ service.description }}</td>
+			</tr>
+			{% empty %}
+			<tr>
+				<td colspan="2">No services available.</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+
+	</table>
+</div>
+{% endif %}
+
+{% endblock content %}
